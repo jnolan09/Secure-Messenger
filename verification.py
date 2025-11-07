@@ -76,11 +76,11 @@ class MessageVerifier:
             return False
         
         if not received_hash or len(received_hash) != 64:
-            print(f"ERROR: Invalid hash format (Expected: 64, received {len(recieved_hash) if recieved_hash else 0})")
+            print(f"ERROR: Invalid hash format (Expected: 64, received {len(received_hash) if received_hash else 0})")
             return False            
         
         try:
-            # Calculate the hash of the data we recieved
+            # Calculate the hash of the data we received
             calculated_hash = self.create_hash(data)
             if calculated_hash is None:
                 return False
@@ -167,6 +167,69 @@ class MessageVerifier:
             print(f"ERROR verifying signature: {e}")
             return False
         
+    # Non-Repudiation functions
+    def log_message(self, sender, recipient, message_hash, signature, timestamp):
+        """
+        Log a message with its signature and timestamp
+
+        The sender can't later deny that they sent this message because we have proof
+        """
+        try:
+            log_entry = {
+                'sender': sender,
+                'recipient': recipient,
+                'message_hash': message_hash,
+                'signature': signature.hex(),
+                'timestamp': timestamp,
+                'logged_at': datetime.datetime.now().isoformat(),
+                'hash_algorithm': HASH_ALGORITHM,
+                'signature_algorithm': f"{SIGNATURE_ALGORITHM}-{SIGNATURE_KEY_SIZE}"
+            }
+
+            # Add to permanent log
+            self.message_log.append(log_entry)
+
+            print(f"Non-Repudiation: Message Logged")
+            print(f"From: {sender} To: {recipient}")
+            print(f"Timestamp: {timestamp}")
+            print(f"Log Entry #{len(self.message_log)}")
+
+        except Exception as e:
+            print(f"ERROR logging message: {e}")
+
+    def get_logs(self):
+        """
+        Retrieve all logged messages
+        """
+        return self.message_log
+    
+    def display_logs(self):
+        """
+        Display all logged messages in a readable format
+        """
+        if not self.message_log:
+            print("\n" + "="*30)
+            print("No messages logged")
+            print("="*30 + "\n")
+            return
+        
+        print("\n" + "="*30)
+        print("Message Log")
+        print("="*30)
+        print(f"Total Messages: {len(self.message_log)}")
+        print("="*30)
+
+        for i, log in enumerate(self.message_log, 1):
+            print(f"\nMessage #{i}:")
+            print(f"From: {log['sender']}")
+            print(f"To: {log['recipient']}")
+            print(f"Sent: {log['timestamp']}")
+            print(f"Logged: {log['logged_at']}")
+            print(f"Hash: {log['message_hash'][:32]}")
+            print(f"Signature: {log['signature'][:32]}")
+
+        print ("\n" + "="*30 + "\n")
+        
 # Test
 if __name__ == "__main__":
     verifier = MessageVerifier()
@@ -212,3 +275,17 @@ if __name__ == "__main__":
     print("\n" + "="*30)
     print("All tests complete")
     print("="*30)
+
+    # Test 5: Non-Repudiation - Logging
+    print("\nTest 5: Non-Repudiation - Message Logging")
+    verifier.log_message(
+        sender= "John",
+        recipient= "Alex",
+        message_hash= test_hash,
+        signature= signature,
+        timestamp= datetime.datetime.now().isoformat()
+    )
+
+    # Display Logs
+    print("\nDisplaying message logs:")
+    verifier.display_logs()

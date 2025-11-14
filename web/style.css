@@ -1,0 +1,338 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #e8edf2;
+    color: #212529;
+}
+
+.app-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #e8edf2;
+}
+
+/* Header */
+.header {
+    background-color: #ffffff;
+    border-bottom: 2px solid #d1d9e0;
+    padding: 20px 30px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.security-badge {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+/* Sections */
+.config-section,
+.messages-section,
+.compose-section {
+    background-color: #ffffff;
+    margin: 12px 20px 0;
+    padding: 15px 20px;
+    border-bottom: 1px solid #d1d9e0;
+}
+
+.section-title {
+    font-size: 13px;
+    font-weight: bold;
+    color: #495057;
+    margin-bottom: 12px;
+}
+
+/* Config Section */
+.config-inputs {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.input-group label {
+    font-size: 10px;
+    color: #6c757d;
+}
+
+.input-group input {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 10px;
+    width: 150px;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #218838;
+}
+
+.btn-secondary {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 9px;
+}
+
+.btn-secondary:hover {
+    background-color: #e4e6eb;
+}
+
+/* Messages Section */
+.messages-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.message-display {
+    flex: 1;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 15px;
+    overflow-y: auto;
+    min-height: 300px;
+}
+
+.welcome-message {
+    color: #495057;
+}
+
+.welcome-message h3 {
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.welcome-message ol {
+    margin-left: 20px;
+    margin-top: 8px;
+    margin-bottom: 10px;
+}
+
+.security-note {
+    color: #28a745;
+    font-style: italic;
+    font-size: 9px;
+    margin-top: 10px;
+}
+
+/* Message Items */
+.message-item {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.message-header {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 10px;
+}
+
+.message-time {
+    font-weight: normal;
+    color: #6c757d;
+    font-size: 9px;
+}
+
+.message-sent .message-header {
+    color: #007bff;
+}
+
+.message-received .message-header {
+    color: #6c757d;
+}
+
+.message-text {
+    margin: 5px 0;
+    font-size: 10px;
+}
+
+.message-status {
+    font-size: 9px;
+    color: #28a745;
+    font-style: italic;
+}
+
+/* Compose Section */
+.compose-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.message-input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 10px;
+}
+
+.message-input:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.btn-send {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.btn-send:hover {
+    background-color: #0056b3;
+}
+
+.btn-receive,
+.btn-logs {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 9px;
+}
+
+.btn-receive:hover,
+.btn-logs:hover {
+    background-color: #5a6268;
+}
+
+/* Status Bar */
+.status-bar {
+    background-color: #343a40;
+    color: #adb5bd;
+    padding: 10px 25px;
+    font-size: 9px;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    width: 90%;
+    max-width: 750px;
+    max-height: 80vh;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.modal-header {
+    background-color: #ffffff;
+    padding: 20px;
+    border-bottom: 2px solid #d1d9e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    font-size: 16px;
+    color: #2c3e50;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #6c757d;
+}
+
+.modal-close:hover {
+    color: #343a40;
+}
+
+.logs-content {
+    padding: 20px;
+    overflow-y: auto;
+    max-height: 60vh;
+    font-family: 'Courier New', monospace;
+    font-size: 9px;
+    background-color: #f8f9fa;
+}
+
+.log-entry {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dee2e6;
+}

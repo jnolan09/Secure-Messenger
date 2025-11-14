@@ -1,3 +1,17 @@
+"""
+Encryption Module - AES-256-GCM and RSA-2048
+Implements CONFIDENTIALITY (1 of 4 cryptography goals)
+
+Extracted and refactored from reference/Server.py and Client.py
+Originally implemented as networked client-server application
+
+Standards Used:
+- AES-256
+- RSA-2048
+- GCM Mode
+- OAEP Padding
+"""
+
 import os
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import serialization, hashes
@@ -6,6 +20,7 @@ from cryptography.hazmat.backends import default_backend
 
 class MessageEncryptor: 
     def __init__(self):
+        # Dictionary storing RSA key pairs for each user
         self.user_keys = {}
     
     def generate_rsa_keys(self, username):
@@ -18,11 +33,15 @@ class MessageEncryptor:
             'public_key': public_key}
     
     def generate_aes_key(self):
-        # Generate 256-bit AES key
+        # Generate random 256-bit AES key (new key each message)
         return os.urandom(32)
     
     def encrypt_message(self, plaintext, aes_key):
-        # Validate input
+        """
+        Encrypt message using AES-256 in GCM mode.
+        GCM provides both encryption and authentication.
+        """
+        # Input validation
         if not plaintext:
             raise ValueError("Plaintext cannot be empty")
         if len(aes_key) != 32:
@@ -33,6 +52,7 @@ class MessageEncryptor:
         encryptor = Cipher(algorithms.AES(aes_key),modes.GCM(iv),backend=default_backend()).encryptor() 
         ciphertext = encryptor.update(plaintext.encode('utf-8')) + encryptor.finalize()
         
+         # Return all components needed for decryption
         return {
             'ciphertext': ciphertext,
             'iv': iv,

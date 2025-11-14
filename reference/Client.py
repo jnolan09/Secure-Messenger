@@ -78,6 +78,9 @@ def main():
                 except Exception as e:
                     print("Decryption error:", e)
                     break
+                except Exception as e:
+                    print(f"Unexpected error: {e}")
+                    break
         threading.Thread(target=reader, daemon=True).start()
 
         # Main loop: read input and send encrypted messages

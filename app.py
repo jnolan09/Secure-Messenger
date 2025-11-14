@@ -1,6 +1,12 @@
 """
 Eel Application - Desktop UI Backend
-Uses encryption.py and verification.py
+Integration layer connecting encryption.py and verification.py
+
+Demonstrates all 4 cryptography goals:
+1. Confidentiality - AES-256-GCM encryption (encryption.py)
+2. Integrity - SHA-256 hashing (verification.py)
+3. Authentication - RSA-PSS signatures (verification.py)
+4. Non-Repudiation - Cryptographic logging (verification.py)
 """
 
 import eel
@@ -18,8 +24,12 @@ eel.init('web')
 
 @eel.expose
 def generate_keys(username, recipient):
-    # Generate RSA keys for both users
+    """
+    Generate RSA-2048 key pairs for both users.
+    Required before any encrypted communication.
+    """
     try:
+        # Generate separate key pairs for each user
         encryptor.generate_rsa_keys(username)
         encryptor.generate_rsa_keys(recipient)
         return {
@@ -34,9 +44,20 @@ def generate_keys(username, recipient):
     
 @eel.expose
 def send_message(sender, recipient, message_text):
-    #Encrypt and sign message
+    """
+    Encrypt, sign, and log a message.
+    Implements all 4 cryptography goals in one operation.
+    
+    Process:
+    1. Generate new AES key (forward secrecy)
+    2. Encrypt message (confidentiality)
+    3. Hash ciphertext (integrity)
+    4. Sign hash (authentication)
+    5. Encrypt AES key for recipient (secure key exchange)
+    6. Log everything (non-repudiation)
+    """
     try:
-        # Generate AES ket and encrypt message
+        # Generate new AES key and encrypt message
         aes_key = encryptor.generate_aes_key()
         encrypted_data = encryptor.encrypt_message(message_text, aes_key)
 
@@ -49,7 +70,7 @@ def send_message(sender, recipient, message_text):
         recipient_public_key = encryptor.get_public_key(recipient)
         encrypted_aes_key = encryptor.encrypt_aes_key(aes_key, recipient_public_key)
 
-        # Log the messsage
+        # Log the message
         timestamp = datetime.datetime.now().isoformat()
         verifier.log_message(sender, recipient, message_hash, signature, timestamp)
 
@@ -57,10 +78,10 @@ def send_message(sender, recipient, message_text):
         message_package = {
             'sender': sender,
             'recipient': recipient,
-            'encrypted_data': encrypted_data,
-            'encrypted_aes_key': encrypted_aes_key,
-            'message_hash': message_hash,
-            'signature': signature,
+            'encrypted_data': encrypted_data, # Ciphertext + IV + tag
+            'encrypted_aes_key': encrypted_aes_key, # RSA-encrypted key
+            'message_hash': message_hash, # SHA-256 hash
+            'signature': signature,  # RSA-PSS signature
             'timestamp': timestamp,
             'original_message': message_text
         }
@@ -79,11 +100,21 @@ def send_message(sender, recipient, message_text):
     
 @eel.expose
 def receive_message():
-    # Decrypt and verify last message
+    """
+    Decrypt and verify the last message.
+    Verifies signature and hash before decryption.
+    
+    Process:
+    1. Decrypt AES key using recipient's private key
+    2. Verify signature (authentication check)
+    3. Verify hash (integrity check)
+    4. Decrypt message (only if verification passes)
+    """
+    # Check if any messages exist
     if not messages:
         return {
             'success': False,
-            'message': 'No messages to recieve'
+            'message': 'No messages to receive'
         }
     
     try:
@@ -136,7 +167,7 @@ def receive_message():
         }
 
 @eel.expose
-def ger_logs():
+def get_logs():
     # Get all message logs
     logs = verifier.get_logs()
     return logs

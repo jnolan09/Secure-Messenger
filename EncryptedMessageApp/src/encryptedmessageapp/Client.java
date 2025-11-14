@@ -43,11 +43,11 @@ public class Client {
     // Method to start the client
     public void start() throws Exception {
 
-        // 1️⃣ Connect to the server via TCP socket
+        //Connect to the server via TCP socket
         Socket socket = new Socket(HOST, PORT);
         System.out.println("Connected to server " + HOST + ":" + PORT);
 
-        // 2️⃣ Create input/output streams for communication
+        // Create input/output streams for communication
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));   // For reading messages
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);                        // For sending messages
         BufferedReader console = new BufferedReader(new InputStreamReader(System.in));            // For reading user input
@@ -191,3 +191,4 @@ public class Client {
         return new String(plain, "UTF-8");
     }
 }
+

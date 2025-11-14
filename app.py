@@ -78,7 +78,7 @@ def send_message(sender, recipient, message_text):
         }
     
 @eel.expose
-def recieve_message():
+def receive_message():
     # Decrypt and verify last message
     if not messages:
         return {
@@ -91,7 +91,7 @@ def recieve_message():
        recipient = package['recipient']
 
        # Decrypt AES key 
-       recipient_private_key = encryptor.user_keys[recipient['private_key']]
+       recipient_private_key = encryptor.user_keys[recipient]['private_key']
        aes_key = encryptor.decrypt_aes_key(package['encrypted_aes_key'], recipient_private_key)
 
        # Verify signature 
@@ -134,4 +134,20 @@ def recieve_message():
             'success': False,
             'message': str(e)
         }
-    
+
+@eel.expose
+def ger_logs():
+    # Get all message logs
+    logs = verifier.get_logs()
+    return logs
+
+@eel.expose
+def clear_history():
+    # Clear message history
+    global messages
+    messages = []
+    return {'success': True}
+
+# Start application
+if __name__ == '__main__':
+    eel.start('index.html', size=(1000,720))

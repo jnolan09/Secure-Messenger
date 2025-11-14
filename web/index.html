@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Secure Messenger</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="app-container">
+            <header class="header">
+                <div class="header-content">
+                    <h1 class="title">Secure Messenger</h1>
+                    <div class="security-badge"> AES-256 | RSA-2048 | SHA-256</div>
+                </div>
+            </header>
+
+            <section class="config-section">
+                <h2 class="section-title">User Configuration</h2>
+                <div class="config-inputs">
+                    <div class="input-group">
+                        <label>Your Name:</label>
+                        <input type="text" id="username" value="Alice">
+                    </div>
+                    <div class="input-group">
+                        <label>Recipient:</label>
+                        <input type="text" id="recipient" value="Bob">
+                    </div>
+                    <button id="generateKeysBTN" class="btn-primary">Generate Kets</button>
+                </div>
+            </section>
+
+            <section class="messages-section">
+                <div class="section-header">
+                    <h2 class="section-title">Message History</h2>
+                    <button id="clearBTN" class="btn-secondary">Clear</button>
+                </div>
+                <div id="messageDisplay" class="message-display">
+                    <div class="welcome-message">
+                        <h3>Welcome to Secure Messenger!</h3>
+                        <p><strong>Start: </strong></p>
+                        <ol>
+                            <li>Click 'Generate Keys' above</li>
+                            <li>Type your message below</li>
+                            <li>Click 'Send' or press ENTER</li>
+                            <li>Click 'Recieve' to decrypt</li>
+                         </ol>
+                         <p class="security-note">All messages are encrypted with AES-256 and signed with RSA-2048</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="compose-section">
+                <h2 class="section-title">Compose Message</h2>
+                <div class="compose-controls">
+                    <input type="text" id="messageInput" placeholder="Type your message" class="message-input">
+                    <button id="sendBTN" class="btn-send">Send</button>
+                    <button id="receiveBtn" class="btn-receive">Receive</button>
+                    <button id="logsBtn" class="btn-logs">Logs</button>
+                </div>
+            </section>
+        </div>
+    </body>
+</html>
